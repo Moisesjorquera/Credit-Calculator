@@ -1,0 +1,73 @@
+#Tabla de amortizaciones
+
+#Definir precisión y no en notación científica
+
+options(digits = 2)
+options(scipen = 999)
+
+#Arreglos para almacenar resultados(Saldo Insoluto, Interés y Amortización)
+
+SI <<- numeric() #Saldo Insoluto
+I <- numeric() #Interes
+A <<- numeric() #Amortización
+AA <<- numeric() #Amortización acumulada
+
+#Definir aquellas variables que determinan la cuota(mensual)
+
+tabla.amort <- function(C,i,n){
+#Fórmula Cuota Mensual
+  R <<- C*i/(1-(1+i)**-n)
+
+#Determinación Saldo Insoluto e Interés inicial
+
+SI[1] <<- C
+I[1] <<- C*i
+
+#Para ir cambiando los valores en función al saldo insoluto que va quedando luego
+# de ir restando los intereses y también la amortización, por eso se usa ciclo for
+# va iterando desde 1 hasta la cantidad de meses totales.
+
+
+#Ciclo for desde 1 hasta n que es la cantidad total de meses
+
+for(k in 1:n){
+
+#Arreglos
+  
+  A[k]<<- R - I[k]
+  AA[k] <<- sum(A[1:k])
+  SI[k+1]<<- SI[k] - A[k]
+  I[k+1]<<- SI[k+1]*i
+  
+}
+
+print(R, digits = 2)
+print(round(I, digits =2))
+print(round(A, digits = 2))
+print(round(AA, digits = 2))
+print(round(SI, digits = 2))
+
+}
+
+#Simulación para estos valores
+
+tabla.amort(10000,0.05, 12)
+
+#Agregar los datos en una tabla
+tabla <- cbind(R, I,A,AA,SI)
+
+#Imprimir la tabla con los resultados hasta el mes 12
+
+tabla <- tabla[1:13,]
+
+
+#Para verificar el valor del dinero en el tiempo
+
+C <- 1128*12
+C
+
+Interes <- C - 10000
+Interes
+
+Precio <- Interes/10000
+Precio
